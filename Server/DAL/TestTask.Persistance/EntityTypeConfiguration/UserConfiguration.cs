@@ -16,6 +16,8 @@ namespace TestTask.Persistance.EntityTypeConfiguration
             builder.HasKey(e => e.Id);
             builder.HasIndex(e => e.Id);
             builder.Property(e => e.Name).HasMaxLength(150);
+            builder.Property(e => e.Login).HasMaxLength(150);
+            builder.Property(e => e.Password).HasMaxLength(150);
 
             builder
                 .HasOne(u => u.Organization)

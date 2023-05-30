@@ -1,3 +1,7 @@
+using System.Reflection;
+using TestTask.Aplication;
+using TestTask.Aplication.Common.Mappings;
+using TestTask.Aplication.Interfaces;
 using TestTask.Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +9,13 @@ var services = builder.Services;
 
 // Add services to the container.
 
+services.AddAutoMapper(config =>
+{
+    config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
+    config.AddProfile(new AssemblyMappingProfile(typeof(ITestTaskDbContext).Assembly));
+});
+
+services.AddAplication();
 services.AddPersistance(builder.Configuration);
 
 builder.Services.AddControllers();
