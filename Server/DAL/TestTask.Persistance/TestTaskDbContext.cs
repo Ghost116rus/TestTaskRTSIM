@@ -24,6 +24,9 @@ namespace TestTask.Persistance
             modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
+            modelBuilder.Entity<User>()
+                .HasIndex(p => new { p.Login, p.OrganizationId}).IsUnique();
+
 
             base.OnModelCreating(modelBuilder);
         }

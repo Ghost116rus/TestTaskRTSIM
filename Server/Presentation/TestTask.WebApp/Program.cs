@@ -3,6 +3,7 @@ using TestTask.Aplication;
 using TestTask.Aplication.Common.Mappings;
 using TestTask.Aplication.Interfaces;
 using TestTask.Persistance;
+using TestTask.WebApp.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -43,6 +44,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
 

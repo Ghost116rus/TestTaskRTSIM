@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestTask.Aplication.CQRS.Organization.Queries.GetOrganizationList
+namespace TestTask.Aplication.CQRS.Auth.Common
 {
-    public class OrganizationVM
+    public class ResponseVM
     {
-
+        public bool Success { get; set; }
     }
 }
