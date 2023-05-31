@@ -1,5 +1,4 @@
-﻿using Client.Authorization.Models;
-using Client.Authorization.ViewModels;
+﻿using Client.Authorization.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.Views.Authorization.Pages
+namespace Client.Authorization.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для AdditionalPage.xaml
+    /// Логика взаимодействия для StartPage.xaml
     /// </summary>
-    public partial class AdditionalPage : Page
+    public partial class StartPage : Page
     {
-        public AdditionalPage(List<Organization> OrganizationsList)
+        public StartPage()
         {
             InitializeComponent();
-            DataContext = new AdditionalPageVM(this.Organizations, this.Logins, this.PasswordField, OrganizationsList);
+            DataContext = new StartPageVM();
         }
     }
 }

@@ -30,7 +30,7 @@ namespace TestTask.Aplication.CQRS.Auth.Queries.Login
                 throw new NotFoundException(request.Login, request.Password);
             }
 
-            return new ResponseVM { Success = true };
+            return new ResponseVM { UserId = user.Id, Success = true, Message = "Успешная авторизация" };
         }
     }
 }

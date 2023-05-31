@@ -1,13 +1,32 @@
 ﻿using Client.Authorization.Http;
+using Client.Authorization.Models;
 using Client.Common;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Client.Authorization.ViewModels
 {
-    public class MainPageVM : INotifyPropertyChanged
+    public class RegistrationPageVM : INotifyPropertyChanged
     {
         #region Свойства
+
+        private string errorlog;
+        public string Errorlog
+        {
+            get { return errorlog; }
+            set { errorlog = value; NotifyPropertyChanged("Errorlog"); }
+        }
+
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; Errorlog = ""; NotifyPropertyChanged("Name"); }
+        }
 
         private string login;
         public string Login
@@ -23,26 +42,34 @@ namespace Client.Authorization.ViewModels
             set { password = value; Errorlog = ""; NotifyPropertyChanged("Password"); }
         }
 
-        private string errorlog;
-        public string Errorlog
+
+        private List<Organization> _organizations;
+        public List<Organization> Organizations { get { return _organizations; } }
+
+
+        private Organization? _selectedOrganization;
+        public Organization? SelectedOrganization
         {
-            get { return errorlog; }
-            set { errorlog = value; NotifyPropertyChanged("Errorlog"); }
+            get { return _selectedOrganization; }
+            set
+            {
+                _selectedOrganization = value;
+                Errorlog = "";
+            }
         }
-
+        
         #endregion
-
 
         #region Команды
 
-        private RelayCommand? _authorize;
-        public RelayCommand Authorize
+        private RelayCommand _registre;
+        public RelayCommand Registre
         {
             get
             {
-                return _authorize ?? new RelayCommand(obj =>
+                return _registre ?? new RelayCommand(obj =>
                 {
-                    var result = MyHttpClient.Authorize(Login, Password);
+                    var result = MyHttpClient.Registre(_selectedOrganization.Id, name, login, password);
 
                     if (result.Success)
                     {
@@ -51,22 +78,10 @@ namespace Client.Authorization.ViewModels
 
                     if (!result.Success)
                     {
-                        Errorlog = "Неверный логин или пароль";
+                        Errorlog = result.Message;
                     }
-
-                }, e => Password != "" && Login != "");
-            }
-        }
-
-        private RelayCommand? _toAdditinalPage;
-        public RelayCommand ToAdditionalPage
-        {
-            get
-            {
-                return _toAdditinalPage ?? new RelayCommand(obj =>
-                {
-                    PageSwitch.SwitchToAdditionalPage();
-                });
+                }, e => _selectedOrganization != null && name != "" && login != "" && password != "" 
+                );
             }
         }
 
@@ -82,15 +97,19 @@ namespace Client.Authorization.ViewModels
             }
         }
 
+
+
         #endregion
 
-        public MainPageVM()
+        public RegistrationPageVM(List<Organization> OrganizationsList)
         {
+            _organizations = OrganizationsList;
+
+            name = "";
             login = "";
             password = "";
             errorlog = "";
         }
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void NotifyPropertyChanged(string propertyName)

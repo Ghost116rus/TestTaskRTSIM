@@ -108,17 +108,29 @@ namespace Client.Authorization.ViewModels
                 {
                     var result = MyHttpClient.Authorize(SelectedLogin, Password);
 
-                    if (result)
+                    if (result.Success)
                     {
-                        PageSwitch.OpenMainWindow();
+                        PageSwitch.OpenMainWindow(result.UserId);
                     }
 
-                    if (!result)
+                    if (!result.Success)
                     {
                         Errorlog = "Неверный логин или пароль";
                     }
                 }, e => Password != ""
                 );
+            }
+        }
+
+        private RelayCommand? _back;
+        public RelayCommand BackToStartPage
+        {
+            get
+            {
+                return _back ?? new RelayCommand(obj =>
+                {
+                    PageSwitch.SwitchToStartPage();
+                });
             }
         }
 
@@ -128,11 +140,11 @@ namespace Client.Authorization.ViewModels
         private ComboBox _loginsCombobox;
         private TextBox _passwordField;
 
-        public AdditionalPageVM(ComboBox organizations, ComboBox loginsComboBox, TextBox passwordField)
+        public AdditionalPageVM(ComboBox organizations, ComboBox loginsComboBox, TextBox passwordField, List<Organization> OrganizationsList)
         {
             errorlog = "";
             password = "";
-            _organizations = MyHttpClient.GetOrganizations();
+            _organizations = OrganizationsList;
 
             _organizationsCombobox = organizations;
             _loginsCombobox = loginsComboBox;

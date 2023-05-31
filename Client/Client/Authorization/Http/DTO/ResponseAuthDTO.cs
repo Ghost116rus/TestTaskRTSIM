@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Client.Authorization.Http.DTO
 {
-    public class ResponseLoginDTO
+    public class ResponseAuthDTO
     {
+        public int UserId { get; set; }
         public bool Success { get; set; }
+        public string Message { get; set; }
+
     }
 }

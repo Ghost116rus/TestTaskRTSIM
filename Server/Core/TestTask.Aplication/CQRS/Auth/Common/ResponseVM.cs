@@ -8,6 +8,8 @@ namespace TestTask.Aplication.CQRS.Auth.Common
 {
     public class ResponseVM
     {
+        public int UserId { get; set; }
         public bool Success { get; set; }
+        public string Message { get; set; }
     }
 }

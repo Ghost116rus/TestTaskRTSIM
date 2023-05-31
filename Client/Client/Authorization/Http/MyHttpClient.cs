@@ -15,20 +15,37 @@ namespace Client.Authorization.Http
     {
         private static HttpClient _httpClient = new HttpClient();
 
-        public static bool Authorize(string login, string password)
+        public static ResponseAuthDTO Authorize(string login, string password)
         {
             var request = new RequestLoginDTO { Login = login, Password = password };
 
             try
             {
                 var response = _httpClient.PostAsJsonAsync("https://localhost:7208/TestTaskWebAPI/Auth/Authorize", request)
-                    .Result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ResponseLoginDTO>().Result;
+                    .Result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ResponseAuthDTO>().Result;
 
-                return response == null ? false : response.Success;
+                return response == null ? new ResponseAuthDTO { Success = false} : response;
             }
             catch (Exception)
             {
-                return false;
+                return new ResponseAuthDTO { Success = false };
+            }
+        }
+
+        public static ResponseAuthDTO Registre(int organizationId, string name, string login, string password)
+        {
+            var request = new RequestRegistreDTO { OrganizationId = organizationId, Name = name, Login = login, Password = password };
+
+            try
+            {
+                var response = _httpClient.PostAsJsonAsync("https://localhost:7208/TestTaskWebAPI/Auth/Registration", request)
+                    .Result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ResponseAuthDTO>().Result;
+
+                return response;
+            }
+            catch (Exception e)
+            {
+                return new ResponseAuthDTO { Success = false, Message = e.Message };
             }
         }
 

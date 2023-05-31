@@ -15,17 +15,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.Views.Authorization.Pages
+namespace Client.Authorization.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для AdditionalPage.xaml
+    /// Логика взаимодействия для RegistrationPage.xaml
     /// </summary>
-    public partial class AdditionalPage : Page
+    public partial class RegistrationPage : Page
     {
-        public AdditionalPage(List<Organization> OrganizationsList)
+        public RegistrationPage(List<Organization> OrganizationsList)
         {
             InitializeComponent();
-            DataContext = new AdditionalPageVM(this.Organizations, this.Logins, this.PasswordField, OrganizationsList);
+            DataContext = new RegistrationPageVM(OrganizationsList);
         }
     }
 }

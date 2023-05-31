@@ -1,4 +1,6 @@
-﻿using Client.Authorization.ViewModels;
+﻿using Client.Authorization.Http;
+using Client.Authorization.ViewModels;
+using Client.Authorization.Views.Pages;
 using Client.Views.Authorization.Pages;
 using System;
 using System.Collections.Generic;
@@ -27,11 +29,12 @@ namespace Client
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             
-            var mainPage = new MainPage();
-            new PageSwitch(this, this.MainFrame, mainPage, new AdditionalPage());
+            var startPage = new StartPage();
+            var organizationList = MyHttpClient.GetOrganizations();
+            new PageSwitch(this, this.MainFrame, startPage, new MainPage(), new AdditionalPage(organizationList), new RegistrationPage(organizationList));
 
 
-            this.MainFrame.Content = mainPage;
+            this.MainFrame.Content = startPage;
         }
     }
 }
