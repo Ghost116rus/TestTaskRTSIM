@@ -12,10 +12,10 @@ namespace TestTask.WebApp.Controllers
 {
     public class AuthController : BaseController
     {
-        [HttpGet]
-        public async Task<ActionResult<ResponseVM>> Authorize(string login, string password )
+        [HttpPost]
+        public async Task<ActionResult<ResponseVM>> Authorize([FromBody] LoginQuery request )
         {
-            var vm = await Mediator.Send(new LoginQuery { Login = login, Password = password});
+            var vm = await Mediator.Send(request);
 
             return Ok(vm);
         }

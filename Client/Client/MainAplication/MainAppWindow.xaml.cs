@@ -1,5 +1,5 @@
 ﻿using Client.Authorization.ViewModels;
-using Client.Views.Authorization.Pages;
+using Client.MainAplication.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,26 +12,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client
+namespace Client.MainAplication
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для MainAppWindow.xaml
     /// </summary>
-    public partial class StartWindow : Window
+    public partial class MainAppWindow : Window
     {
-        public StartWindow()
+        public MainAppWindow()
         {
             InitializeComponent();
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            
-            var mainPage = new MainPage();
-            new PageSwitch(this, this.MainFrame, mainPage, new AdditionalPage());
-
-
-            this.MainFrame.Content = mainPage;
+            DataContext = new MainAppVm(this);
         }
     }
 }

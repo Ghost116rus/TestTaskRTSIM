@@ -1,4 +1,5 @@
-﻿using Client.Common;
+﻿using Client.Authorization.Http;
+using Client.Common;
 using System.ComponentModel;
 
 
@@ -12,14 +13,14 @@ namespace Client.Authorization.ViewModels
         public string Login
         {
             get { return login; }
-            set { login = value; NotifyPropertyChanged("Login"); }
+            set { login = value; Errorlog = ""; NotifyPropertyChanged("Login"); }
         }
 
         private string password;
         public string Password
         {
             get { return password; }
-            set { password = value; NotifyPropertyChanged("Password"); }
+            set { password = value; Errorlog = ""; NotifyPropertyChanged("Password"); }
         }
 
         private string errorlog;
@@ -41,7 +42,18 @@ namespace Client.Authorization.ViewModels
             {
                 return _authorize ?? new RelayCommand(obj =>
                 {
-                    Errorlog = "Работает однако!";
+                    var result = MyHttpClient.Authorize(Login, Password);
+
+                    if (result)
+                    {
+                        PageSwitch.OpenMainWindow();
+                    }
+
+                    if (!result)
+                    {
+                        Errorlog = "Неверный логин или пароль";
+                    }
+
                 }, e => Password != "" && Login != "");
             }
         }

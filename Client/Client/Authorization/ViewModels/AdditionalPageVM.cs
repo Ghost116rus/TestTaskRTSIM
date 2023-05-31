@@ -1,4 +1,5 @@
-﻿using Client.Authorization.Models;
+﻿using Client.Authorization.Http;
+using Client.Authorization.Models;
 using Client.Common;
 using System;
 using System.Collections.Generic;
@@ -91,6 +92,7 @@ namespace Client.Authorization.ViewModels
                 return _toMainPage ?? new RelayCommand(obj =>
                 {
                     SelectedOrganization = null;
+                    _organizationsCombobox.SelectedIndex = -1;
                     Errorlog = "";
                     PageSwitch.SwitchToMainPage();
                 });
@@ -104,7 +106,17 @@ namespace Client.Authorization.ViewModels
             {
                 return _authorize ?? new RelayCommand(obj =>
                 {
-                    Errorlog = "Авторизация";
+                    var result = MyHttpClient.Authorize(SelectedLogin, Password);
+
+                    if (result)
+                    {
+                        PageSwitch.OpenMainWindow();
+                    }
+
+                    if (!result)
+                    {
+                        Errorlog = "Неверный логин или пароль";
+                    }
                 }, e => Password != ""
                 );
             }
@@ -112,15 +124,17 @@ namespace Client.Authorization.ViewModels
 
         #endregion
 
+        private ComboBox _organizationsCombobox;
         private ComboBox _loginsCombobox;
         private TextBox _passwordField;
 
-        public AdditionalPageVM(ComboBox loginsComboBox, TextBox passwordField)
+        public AdditionalPageVM(ComboBox organizations, ComboBox loginsComboBox, TextBox passwordField)
         {
             errorlog = "";
             password = "";
             _organizations = MyHttpClient.GetOrganizations();
 
+            _organizationsCombobox = organizations;
             _loginsCombobox = loginsComboBox;
             _passwordField = passwordField;
 

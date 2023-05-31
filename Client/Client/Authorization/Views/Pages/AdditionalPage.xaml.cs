@@ -24,7 +24,7 @@ namespace Client.Views.Authorization.Pages
         public AdditionalPage()
         {
             InitializeComponent();
-            DataContext = new AdditionalPageVM(this.Logins, this.PasswordField);
+            DataContext = new AdditionalPageVM(this.Organizations, this.Logins, this.PasswordField);
         }
     }
 }
